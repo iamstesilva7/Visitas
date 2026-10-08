@@ -1,0 +1,65 @@
+CONTROLE DE VISITAS — VERSÃO NETLIFY
+
+Esta versão é um site completo para Netlify. Não usa Python, INICIAR.bat ou computador ligado. A Netlify executa automaticamente as funções do login e guarda os registros online.
+
+COMO PUBLICAR PELO SEU REPOSITÓRIO
+1. Extraia o ZIP.
+2. Copie o CONTEÚDO da pasta Controle_de_Visitas_Netlify para a raiz do seu repositório VisitasCobasi. netlify.toml e package.json devem ficar na raiz, junto das pastas public, server e netlify.
+3. Faça commit e push.
+4. No projeto existente da Netlify, em Project configuration > Environment variables, crie:
+   Nome: INITIAL_PASSWORD
+   Valor: a senha padrão definida na conversa.
+   Escopo: Functions (ou All scopes, se esta for a opção disponível).
+   Contexto: Production.
+   Marque como secreto quando disponível.
+5. Confira as configurações de build:
+   Base directory: vazio (raiz do repositório).
+   Build command: npm run build
+   Publish directory: public
+   Functions directory: netlify/functions
+   Node: 22 (definido em netlify.toml).
+6. Execute um novo deploy da branch main. Depois de adicionar a variável, sempre faça um novo deploy.
+7. Quando aparecer Published, entre no link principal do site. Não use o link de deploy preview.
+8. Teste com stephanie.silva e a senha inicial. No primeiro acesso, escolha uma nova senha. Depois teste o mesmo login em outro navegador ou celular.
+
+Todos acessarão pelo link, sem instalar nem iniciar nada. Não faça upload apenas de index.html: use o repositório com todas as pastas para a Netlify compilar e publicar as funções.
+O ZIP contém código pronto para publicação; não foi publicado na sua conta a partir desta conversa.
+
+O QUE FOI MANTIDO
+- Layout e logo.
+- Todos os nomes completos e as 11 contas por e-mail ou usuário.
+- Francisco tem todas as lojas, mas somente suas próprias visitas.
+- Stephanie tem conta de teste separada das visitas reais.
+- Exclusão com justificativa e aba Excluídos.
+- Filtros por região para todos os perfis; Francisco também filtra por regional.
+- Mapa por loja/resumo, zoom de 100 a 500%, arraste e gesto de dois dedos.
+- Painel com as lojas mais/menos visitadas nos últimos 90 dias. Visitas excluídas não contam.
+- Cores por recência: até 15 dias verde, 16 a 30 amarelo, mais de 30 ou nunca vermelho.
+- Posições ilustrativas por região; não são coordenadas dos endereços das lojas.
+
+DADOS E SENHAS
+- Netlify Blobs: armazenamento vinculado ao mesmo projeto Netlify, fora dos arquivos do Git.
+- Cada visita é um registro separado. Duas visitas salvas ao mesmo tempo não sobrescrevem uma à outra.
+- As leituras usam consistência forte.
+- Exclusões preservam o registro original e a justificativa separadamente.
+- Senhas são hashes scrypt com salt individual, nunca recebidos pela tela.
+- Alteração de senha invalida as sessões anteriores.
+- Os dados sobrevivem a novas publicações do MESMO projeto Netlify. Não exclua os stores em Blobs nem recrie o projeto para atualizar.
+- As contas são provisionadas no primeiro login. A senha inicial configura contas novas; não redefine senhas já escolhidas.
+- Deploy previews são bloqueados para não alterar o armazenamento de produção.
+
+SE VOCÊ JÁ TESTOU A VERSÃO PYTHON
+Esta adaptação não copia automaticamente o banco SQLite de seu computador. Para preservar visitas desse teste, use o exportador incluído:
+  python scripts/exportar_sqlite.py CAMINHO_DO_BANCO > visitas_exportadas.json
+Depois de entrar na conta correspondente no site, use a opção Importar arquivo no rodapé. Importa somente as visitas daquele usuário e evita repetir registros já importados.
+As senhas escolhidas na versão Python não são migradas; cada conta precisa definir a senha no primeiro acesso desta versão Netlify.
+Visitas da antiga versão localStorage também podem ser importadas pelo botão Importar histórico quando encontradas no mesmo endereço/navegador.
+
+VALIDAÇÃO
+Testes automatizados verificaram login, primeiro acesso, sessões diferentes, isolamento por conta, visitas simultâneas, exclusão, justificativa, importação sem duplicatas e preservação em uma nova instância.
+A publicação e o teste real do link Netlify dependem das configurações da sua conta.
+
+EXPORTAÇÃO DE PLANILHAS
+- Exportar visitas: CSV compatível com Excel, com visitas do usuário conectado, respeitando os filtros, incluindo status, observações e exclusões justificadas.
+- Exportar permissões: usuário, nome, e-mail, perfil e cada loja permitida. Para regionais, exporta somente as próprias permissões. Francisco e Stephanie podem exportar a relação das 11 contas e suas lojas permitidas, mas continuam sem acesso às visitas alheias.
+- Nenhuma planilha contém senhas ou hashes.
